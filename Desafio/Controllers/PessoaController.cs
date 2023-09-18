@@ -8,11 +8,9 @@ namespace Desafio.Controllers
     [Route("[controller]")]
     public class PessoaController : ControllerBase
     {
-
         private readonly ILogger<PessoaController> _logger;
 
         private readonly PessoaResolver _pessoaResolver;
-
         public PessoaController(ILogger<PessoaController> logger, PessoaResolver pessoaResolver)
         {
             _logger = logger;
@@ -22,9 +20,18 @@ namespace Desafio.Controllers
         [HttpPost("filtrar")]
         public ActionResult<List<Pessoa>> FiltarPessoas(List<Pessoa> pessoas)
         {
-            var resultado = _pessoaResolver.Resolve(pessoas);
-            _logger.LogInformation(resultado.ToString());
-            return Ok(resultado);
+            try
+            {
+                var resultado = _pessoaResolver.Resolve(pessoas);
+                _logger.LogInformation(resultado.ToString());
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+           
         }
     }
 }

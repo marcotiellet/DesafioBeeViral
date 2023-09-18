@@ -7,11 +7,9 @@ namespace Desafio.Controllers
     [Route("[controller]")]
     public class FatorialController : ControllerBase
     {
-
         private readonly ILogger<FatorialController> _logger;
 
         private readonly FatorialResolver _fatorialResolver;
-
         public FatorialController(ILogger<FatorialController> logger, FatorialResolver fatorialResolver)
         {
             _logger = logger;
@@ -21,9 +19,18 @@ namespace Desafio.Controllers
         [HttpPost("calcular")]
         public ActionResult<string> Calcular(int fatorial)
         {
-            var resultado = _fatorialResolver.Resolve(fatorial);
-            _logger.LogInformation(resultado);
-            return Ok(resultado);
+            try
+            {
+                var resultado = _fatorialResolver.Resolve(fatorial);
+                _logger.LogInformation(resultado);
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);  
+            }
+           
         }
     }
 }

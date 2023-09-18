@@ -1,11 +1,13 @@
-﻿namespace Desafio.Domain
+﻿using System.Numerics;
+
+namespace Desafio.Domain
 {
     public class FatorialResolver
     {
         public string Resolve(int numero) 
         {            
             var numeroOriginal = numero;
-            var total = 1;
+            BigInteger total = 1;
 
             if (numero < 0)
             {               
